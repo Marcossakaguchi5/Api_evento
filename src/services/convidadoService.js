@@ -4,7 +4,7 @@ module.exports = {
   
     buscarTodos: () => {
         return new Promise((ace, rej) => {
-          db.query("SELECT * FROM convidados INNER JOIN empresa ON (convidados.id_empresa = empresa.id_empresa)", (error, results) => {
+          db.query("SELECT * FROM convidados INNER JOIN empresa ON (convidados.empresa = empresa.empresa)", (error, results) => {
          
             if (error) {
               rej(error);
@@ -14,10 +14,10 @@ module.exports = {
           });
         });
       },
-      buscarUm: (id_convidado) => {
+      buscarUm: (nome) => {
         return new Promise((ace, rej)=>{
     
-            db.query('SELECT  c.nome, c.cargo,e.empresa, c.email, c.telefone  FROM empresa e,convidados c WHERE c.id_empresa = e.id_empresa AND c.id_convidados = ?', [id_convidado], (error, results) => {
+            db.query('SELECT  c.nome, c.cargo,e.empresa, c.email, c.telefone  FROM empresa e,convidados c WHERE c.empresa = e.empresa AND c.nome = ?', [nome], (error, results) => {
                 if(error) { rej(error); return; }
                 if(results.length > 0){ 
                     ace(results[0]);
@@ -27,11 +27,11 @@ module.exports = {
             });
         });
     },
-    inserir: (nome,email,cargo,telefone,id_empresa)=> {
+    inserir: (nome,email,cargo,telefone,empresa)=> {
         return new Promise((aceito, rejeitado)=> {
 
-            db.query('INSERT INTO convidados (nome,email,cargo,telefone,id_empresa) VALUES (?,?,?,?,?)',
-                [nome,email,cargo,telefone,id_empresa],
+            db.query('INSERT INTO convidados (nome,email,cargo,telefone,empresa) VALUES (?,?,?,?,?)',
+                [nome,email,cargo,telefone,empresa],
                 (error, results)=>{
                     if(error){ rejeitado(error); return; }
                     aceito(results.insertid_convidado); 
@@ -39,10 +39,10 @@ module.exports = {
             );
         });
     },
-    alterar:(id_convidados,nome,email,cargo,telefone,id_empresa)=> {
+    alterar:(nome,nomes,email,cargo,telefone,empresa)=> {
         return new Promise((aceito, rejeitado)=> {
-            db.query('UPDATE convidados SET nome=?,email=?,cargo=?,telefone=? ,id_empresa =? WHERE id_convidados = ?',
-                [nome,email,cargo,telefone,id_empresa,id_convidados],
+            db.query('UPDATE convidados SET nome=?,email=?,cargo=?,telefone=? ,empresa =? WHERE nome = ?',
+                [nome,email,cargo,telefone,empresa,nomes],
                 (error, results) => {
                     if(error){ rejeitado(error); return; }
                     aceito(results);
@@ -51,9 +51,9 @@ module.exports = {
         });
     },
 
-    excluir: (id_convidado)=> {
+    excluir: (nome)=> {
         return new Promise((aceito, rejeitado)=> {
-            db.query('DELETE FROM convidados WHERE id_convidados = ?',[id_convidado], (error, results ) =>{
+            db.query('DELETE FROM convidados WHERE nome = ?',[nome], (error, results ) =>{
                 if(error){ rejeitado(error); return; }
                 aceito(results);
             });

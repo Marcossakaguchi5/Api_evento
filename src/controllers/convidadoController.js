@@ -6,7 +6,7 @@ module.exports = {
     let convidados = await convidadoService.buscarTodos();
     for (let i in convidados) {
       json.result.push({
-        id_convidado:convidados[i].id_convidados,
+
         nome: convidados[i].nome,
         cargo: convidados[i].cargo,
         empresa:convidados[i].empresa,
@@ -21,8 +21,8 @@ module.exports = {
   buscarUm: async (req, res) => {
     let json = { error: "", result: {} };
 
-    let id_convidado = req.params.id_convidado;
-    let convidado = await convidadoService.buscarUm(id_convidado);
+    let nome = req.params.nome;
+    let convidado = await convidadoService.buscarUm(nome);
 
     if (convidado) {
       json.result = convidado;
@@ -38,15 +38,15 @@ module.exports = {
     let email = req.body.email;
     let cargo = req.body.cargo;
     let telefone = req.body.telefone;
-    let id_empresa = req.body.id_empresa;
+    let empresa = req.body.empresa;
 
-    if (nome && email && cargo && telefone,id_empresa) {
+    if (nome && email && cargo && telefone,empresa) {
       let convidadoCodigo = await convidadoService.inserir(
         nome,
         email,
         cargo,
         telefone,
-        id_empresa
+        empresa
       );
       json.result = {
         id_convidado: convidadoCodigo,
@@ -54,7 +54,7 @@ module.exports = {
         email,
         cargo,
         telefone,
-        id_empresa,
+        empresa,
       };
     } else {
       json.error = "Campos não enviados";
@@ -65,29 +65,30 @@ module.exports = {
   alterar: async (req, res) => {
     let json = { error: "", result: {} };
 
-    let id_convidados = req.params.id_convidado;
+    let nomes = req.params.nome;
     let nome = req.body.nome;
     let email = req.body.email;
     let cargo = req.body.cargo;
     let telefone = req.body.telefone;
-    let id_empresa = req.body.id_empresa;
+    let empresa = req.body.empresa;
 
-    if (id_convidados && nome && email && cargo && telefone&& id_empresa) {
+    if (nome && nomes && email && cargo && telefone&& empresa) {
       await convidadoService.alterar(
-        id_convidados,
-        nome,
+      
+       nome,
+        nomes,
         email,
         cargo,
         telefone,
-        id_empresa
+        empresa
       );
       json.result = {
-        id_convidados,
-        nome,
+     
+        nomes,
         email,
         cargo,
         telefone,
-        id_empresa
+        empresa
       };
     } else {
       json.error = "Campos não enviados";
@@ -97,7 +98,7 @@ module.exports = {
   excluir: async (req, res) => {
     let json = { error: "", result: {} };
 
-    await convidadoService.excluir(req.params.id_convidado);
+    await convidadoService.excluir(req.params.nome);
 
     res.json(json);
   },

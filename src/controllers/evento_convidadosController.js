@@ -33,22 +33,36 @@ module.exports = {
     
         res.json(json);
       },
+       
+      buscarUmConvidado: async (req, res) => {
+        let json = { error: "", result: {} };
+    
+        let id_evento = req.params.id_evento; 
+        let nome=req.body.nome;
+        let evento = await evento_convidadosService.buscarUm(id_evento,nome);
+    
+        if (evento) {
+          json.result = evento; 
+        }
+    
+        res.json(json);
+      },
 
     inserir: async(req, res) => {
         let json = {error:'', result:{}};
 
-        let id_evento = req.body.id_evento;
-        let id_convidados = req.body.id_convidados;
+        let id_evento = req.params.id_evento;
+        let nome = req.body.nome;
         let condicao = req.body.condicao;
         let anunciados  = req.body.anunciados;
         let presenca = req.body.presenca
        
-        if (id_evento&&id_convidados&&condicao&&anunciados&&presenca){
-            let evento_convidadosCodigo = await evento_convidadosService.inserir(id_evento,id_convidados,condicao,anunciados,presenca);
+        if (id_evento&&nome&&condicao&&anunciados&&presenca){
+            let evento_convidadosCodigo = await evento_convidadosService.inserir(id_evento,nome,condicao,anunciados,presenca);
             json.result = {
-                id_convidado:evento_convidadosCodigo,
+                nome:evento_convidadosCodigo,
                 id_evento,
-                id_convidados,
+               nome,
                 condicao,
                 anunciados,
                 presenca,
@@ -63,16 +77,16 @@ module.exports = {
         let json = {error:'', result:{}};
 
         let id_evento = req.params.id_evento;
-        let id_convidados = req.body.id_convidados;
+        let nome = req.body.nome;
         let condicao = req.body.condicao;
         let anunciados  = req.body.anunciados;
         let presenca = req.body.presenca
     
-        if (id_evento&&id_convidados&&condicao&&anunciados&&presenca){
-            await evento_convidadosService.alterar(id_evento,id_convidados,condicao,anunciados,presenca);
+        if (id_evento&&nome&&condicao&&anunciados&&presenca){
+            await evento_convidadosService.alterar(id_evento,nome,condicao,anunciados,presenca);
             json.result = {
                 id_evento,
-                id_convidados,
+                nome,
                  condicao,
                 anunciados,
                 presenca,
@@ -81,21 +95,14 @@ module.exports = {
             json.error = 'Campos não enviados';
         }
         res.json(json);
-    },/*
-    excluir_convidado_evento: async(req, res) => {
-        let json = {error:'', result:{}};
-
-        await evento_convidadosService.excluir(req.params.id_evento);
-        
-        res.json(json);
-    },*/
-    excluir: async(req, res) => {
-        let json = {error:'', result:{}};
-
-        await evento_convidadosService.excluir(req.params.id_evento);
-        
-        res.json(json);
     },
+    excluir: async(req, res) => {
+      let json = {error:'', result:{}};
+
+      await evento_convidadosService.excluir(req.params.id_evento, req.body.nome);
+      
+      res.json(json);
+  },
 }
 
 

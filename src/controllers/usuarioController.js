@@ -20,7 +20,7 @@ module.exports = {
           },
           process.env.JWT_KEY,
           {
-            expiresIn: "7d",
+            expiresIn: "10s",
           }
         );
         res.set('x-access-token',token)

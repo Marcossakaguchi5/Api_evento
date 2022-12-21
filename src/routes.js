@@ -28,6 +28,7 @@ router.post("/refresh", verifyRefreshToken, (req, res) => {
   return res.json({ token });
 });
 
+
 router.post("/login", usuarioController.login);
 
 router.get("/usuario", /*verifyToken,*/ usuarioController.buscarTodos);
@@ -41,8 +42,8 @@ const empresaController = require("./controllers/empresaController");
 router.get("/empresa", empresaController.buscarTodos);
 router.get("/empresa/:id_empresa", empresaController.buscarUm);
 router.post("/empresa", empresaController.inserir);
-router.put("/empresa/:id_empresa", empresaController.alterar);
-router.delete("/empresa/:id_empresa", empresaController.excluir);
+router.put("/empresa/:empresa", empresaController.alterar);
+router.delete("/empresa/:empresa", empresaController.excluir);
 
 const eventoController = require("./controllers/eventoController");
 router.get("/evento", eventoController.buscarTodos);
@@ -53,10 +54,10 @@ router.delete("/evento/:id_evento", eventoController.excluir);
 
 const convidadoController = require("./controllers/convidadoController");
 router.get("/convidados", convidadoController.buscarTodos);
-router.get("/convidados/:id_convidado", convidadoController.buscarUm);
+router.get("/convidados/:nome", convidadoController.buscarUm);
 router.post("/convidados/", convidadoController.inserir);
-router.put("/convidados/:id_convidado", convidadoController.alterar);
-router.delete("/convidados/:id_convidado", convidadoController.excluir);
+router.put("/convidados/:nome", convidadoController.alterar);
+router.delete("/convidados/:nome", convidadoController.excluir);
 
 const evento_convidadosController = require("./controllers/evento_convidadosController");
 router.get("/evento_convidados", evento_convidadosController.buscarTodos);
@@ -64,14 +65,15 @@ router.get(
   "/evento_convidados/:id_evento",
   evento_convidadosController.buscarUm
 );
-router.post("/evento_convidados/", evento_convidadosController.inserir);
+router.get(
+  "/evento_convidados/:id_evento",
+  evento_convidadosController.buscarUmConvidado
+);
+router.post("/evento_convidados/:id_evento", evento_convidadosController.inserir);
 router.put(
   "/evento_convidados/:id_evento",
   evento_convidadosController.alterar
 );
-router.delete(
-  "/evento_convidados/:id_evento",
-  evento_convidadosController.excluir
-);
 
+router.delete("/evento_convidados/:id_evento",evento_convidadosController.excluir);
 module.exports = router;

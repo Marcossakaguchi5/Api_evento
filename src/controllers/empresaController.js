@@ -3,11 +3,10 @@ const empresaService = require("../services/empresaService");
 module.exports = {
   buscarTodos: async (req, res) => {
     let json = { error: "", result: [] };
-    let empresa = await empresaService.buscarTodos();
-    for (let i in empresa) {
+    let empresas = await empresaService.buscarTodos();
+    for (let i in empresas) {
       json.result.push({
-        id_empresa: empresa[i].id_empresa,
-        empresa: empresa[i].empresa,
+       empresa: empresas[i].empresa,
       });
     }
     res.status(200);
@@ -17,11 +16,11 @@ module.exports = {
   buscarUm: async (req, res) => {
     let json = { error: "", result: {} };
 
-    let id_empresa = req.params.id_empresa; //para pegar o parametro
-    let empresa = await empresaService.buscarUm(id_empresa);
+    let empresa = req.params.id_empresa; //para pegar o parametro
+    let empresas = await empresaService.buscarUm(empresa);
 
-    if (empresa) {
-      json.result = empresa;
+    if (empresas) {
+      json.result = empresas;
     }
     res.status(200);
     res.json(json);
@@ -35,8 +34,8 @@ module.exports = {
     if (empresa) {
       let empresaCod = await empresaService.inserir(empresa);
       json.result = {
-        id_empresa: empresaCod,
-        empresa,
+        empresa: empresaCod,
+        
       };
     } else {
       json.error = "Campos não enviados";
@@ -48,13 +47,15 @@ module.exports = {
   alterar: async (req, res) => {
     let json = { error: "", result: {} };
 
-    let id_empresa = req.params.id_empresa;
+    
+    let empresas = req.params.empresa;
     let empresa = req.body.empresa;
+  
 
-    if (id_empresa && empresa) {
-      await empresaService.alterar(id_empresa, empresa);
+    if (empresas&&empresa) {
+      await empresaService.alterar(empresas,empresa);
       json.result = {
-        id_empresa,
+      
         empresa,
       };
     } else {
@@ -65,7 +66,7 @@ module.exports = {
   excluir: async (req, res) => {
     let json = { error: "", result: {} };
 
-    await empresaService.excluir(req.params.id_empresa);
+    await empresaService.excluir(req.params.empresa);
     res.status(204);
     res.json(json);
   },

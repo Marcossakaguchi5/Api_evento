@@ -12,11 +12,11 @@ module.exports = {
       });
     });
   },
-  buscarUm: (id_empresa) => {
+  buscarUm: (empresa) => {
     return new Promise((ace, rej) => {
       db.query(
-        "SELECT * FROM empresa WHERE id_empresa = ?",
-        [id_empresa],
+        "SELECT * FROM empresa WHERE empresa = ?",
+        [empresa],
         (error, results) => {
           if (error) {
             rej(error);
@@ -41,16 +41,16 @@ module.exports = {
             rejeitado(error);
             return;
           }
-          aceito(results.insertid_empresa);
+          aceito(results.insertempresa);
         }
       );
     });
   },
-  alterar: (id_empresa, empresa) => {
+  alterar: (empresas,empresa) => {
     return new Promise((aceito, rejeitado) => {
       db.query(
-        "UPDATE empresa SET empresa=? WHERE id_empresa = ?",
-        [empresa, id_empresa],
+        "UPDATE empresa SET empresa=? WHERE empresa = ?",
+        [empresa,empresas],
         (error, results) => {
           if (error) {
             rejeitado(error);
@@ -62,11 +62,11 @@ module.exports = {
     });
   },
 
-  excluir: (id_empresa) => {
+  excluir: (empresa) => {
     return new Promise((aceito, rejeitado) => {
       db.query(
-        "DELETE FROM empresa WHERE id_empresa = ?",
-        [id_empresa],
+        "DELETE FROM empresa WHERE empresa = ?",
+        [empresa],
         (error, results) => {
           if (error) {
             rejeitado(error);

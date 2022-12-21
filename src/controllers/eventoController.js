@@ -9,6 +9,9 @@ module.exports = {
         id_evento: evento[i].id_evento,
         descricao: evento[i].descricao,
         data_hora: evento[i].data_hora.toGMTString(),
+        confirmados:evento[i].confirmados,
+        nao_respondeu:evento[i].nao_respondeu,
+        total:evento[i].total,
 
         id_login: evento[i].id_login,
         login: evento[i].login,
